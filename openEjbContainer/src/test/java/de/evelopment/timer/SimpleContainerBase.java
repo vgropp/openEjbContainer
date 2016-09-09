@@ -31,6 +31,7 @@ public class SimpleContainerBase {
 		p.put("SocketResourceAdapter.BrokerXmlConfig", "");
 		p.put("MyOtherContainer", "new://Container?type=MESSAGE");
 		p.put("MyOtherContainer.ResourceAdapter", "SocketResourceAdapter");
+		p.put("MyOtherContainer.MessageListenerInterface", "de.evelopment.messagedriven.SocketConnectionEndpoint");
 
 		container = EJBContainer.createEJBContainer(p);
     Context context = container.getContext();
