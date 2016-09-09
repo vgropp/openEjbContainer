@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+    }
+}
+
+repositories {
+  maven { url 'http://gerbil/nexus/content/groups/public/' }
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile group: 'org.apache.openejb',  name: 'openejb-server', version: '4.7.2'
+//     compile group: 'org.apache.tomee',  name: 'openejb-server', version: '7.0.0-M1'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+eclipse {
+  project {
+    natures = ['org.springsource.ide.eclipse.gradle.core.nature', 'org.eclipse.jdt.core.javanature']
+  }
+  classpath {
+    file {
+        withXml {
+            def node = it.asNode()
+        }
+    }
+  }
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
