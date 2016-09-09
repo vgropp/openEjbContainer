@@ -1,5 +1,7 @@
 package de.evelopment.timer;
 
+import java.util.Properties;
+
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -17,7 +19,20 @@ public class SimpleContainerBase {
 
 	@Before
 	public void startUp() {
-		container = EJBContainer.createEJBContainer();
+		Properties p = new Properties();
+		p.put("MyJmsResourceAdapter", "new://Resource?type=ActiveMQResourceAdapter");
+		p.put("MyJmsResourceAdapter.ServerUrl", "tcp://someHostName:61616");
+		p.put("MyJmsResourceAdapter.BrokerXmlConfig", "");
+
+		p.put("MyJMSContainer", "new://Container?type=MESSAGE");
+		p.put("MyJMSContainer.ResourceAdapter", "MyJmsResourceAdapter");
+
+		p.put("SocketResourceAdapter", "new://Resource?type=ActiveMQResourceAdapter");
+		p.put("SocketResourceAdapter.BrokerXmlConfig", "");
+		p.put("MyOtherContainer", "new://Container?type=MESSAGE");
+		p.put("MyOtherContainer.ResourceAdapter", "SocketResourceAdapter");
+
+		container = EJBContainer.createEJBContainer(p);
     Context context = container.getContext();
     try {
       context.bind("inject", this);

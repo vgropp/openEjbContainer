@@ -7,7 +7,7 @@ import javax.jms.MessageListener;
 
 @MessageDriven(
     name = "JmsMessageDriven",
-    mappedName = "testJms",
+    mappedName = "JmsMessageDriven",
     messageListenerInterface = MessageListener.class,
     activationConfig = {
         @ActivationConfigProperty(
