@@ -10,10 +10,8 @@ import javax.jms.MessageListener;
     mappedName = "JmsMessageDriven",
     messageListenerInterface = MessageListener.class,
     activationConfig = {
-        @ActivationConfigProperty(
-            propertyName = "destinationType",
-            propertyValue = "javax.jms.Queue"
-        )
+        @ActivationConfigProperty(propertyName = "destinationType",propertyValue = "javax.jms.Queue"),
+        @ActivationConfigProperty(propertyName="maxSession", propertyValue="1")
     })
 public class JmsMessageDrivenBean implements MessageListener {
 
