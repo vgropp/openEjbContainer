@@ -23,16 +23,17 @@ public class SimpleContainerBase {
 
   @Before
   public void startUp() {
-    Properties p = loadProperties("openejb.properties");
-    container = EJBContainer.createEJBContainer(p);
-    Context context = container.getContext();
-    try {
-      context.bind("inject", this);
-    } catch (NamingException e) {
-      Assert.fail("Injection failed for " + this.getClass() + ": " + e.toString());
+    if (container == null) {
+      Properties p = loadProperties("openejb.properties");
+      container = EJBContainer.createEJBContainer(p);
+      Context context = container.getContext();
+      try {
+        context.bind("inject", this);
+      } catch (NamingException e) {
+        Assert.fail("Injection failed for " + this.getClass() + ": " + e.toString());
+      }
     }
   }
-
 
   private static Properties loadProperties(String filename) {
     URL url = getURL("./",filename);
@@ -54,7 +55,7 @@ public class SimpleContainerBase {
         File file = new File(dir, filename);
         if (file.exists()) {
           url = file.toURI().toURL();
-        } 
+        }
         if (url == null) {
           url = new URL("file:" + dir + "/" + filename);
         }
@@ -67,6 +68,7 @@ public class SimpleContainerBase {
   @After
   public void shutdown() {
     container.close();
+    container = null;
   }
 
 }
